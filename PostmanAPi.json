@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "2e1366b4-e3d7-424f-943d-e1652f8c9a6d",
+		"name": "Blockchain_Udacity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get block",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/block/height/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"block",
+						"height",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve blocks with address",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/blocks/mhJjL6eR2HL5PrSmAjSZ2ze8pCNviV5J6U",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"blocks",
+						"mhJjL6eR2HL5PrSmAjSZ2ze8pCNviV5J6U"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post requestValidation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\":\"2N5a8LQ7gJphJb39g4W2nkZtM311DpWUGVL\"   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/requestValidation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"requestValidation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post submitstar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\":\"mhJjL6eR2HL5PrSmAjSZ2ze8pCNviV5J6U\",\r\n    \"signature\":\"IBl5ILKE1s2rp3uOPrCkMtGoWQLuKwkaqx4lwpYZf9yZFL4tCbDVKNG4qFqTM9oB2vSm0OFXZCyEKkQtof1KbDM=\",\r\n    \"message\":\"mhJjL6eR2HL5PrSmAjSZ2ze8pCNviV5J6U:1654452725:starRegistry\",\r\n    \"star\":{\r\n        \"dec\":\"06/06/2022\",\r\n        \"ra\":\"1:09:05:AM\",\r\n        \"story\":\"chungnx@fsoft.com test block 1\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/submitstar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"submitstar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve block with hash",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
