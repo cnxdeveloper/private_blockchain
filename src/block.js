@@ -42,7 +42,7 @@ class Block {
             // Recalculate the hash of the Block
             
             newhash = SHA256(JSON.stringify(self)).toString();
-            if (newhash === this.hash || this.hash === null){
+            if (newhash === this.hash){
                 resolve(true);
             }
             else{
