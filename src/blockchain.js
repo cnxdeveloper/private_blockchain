@@ -73,6 +73,10 @@ class Blockchain {
                     block.previousBlockHash = self.chain[sizec - 1].hash;
                 }
                 this.chain.push(block);
+                let valid_chain = await self.validateChain();
+                if (valid_chain.length > 0){
+                    reject("the chain invalid")
+                }
                 resolve(block);
             }
             catch(error){
@@ -119,7 +123,7 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             let message_time = parseInt(message.split(':')[1]);
             let current_time = parseInt(new Date().getTime().toString().slice(0, -3));
-            if (current_time - message_time > 5 * 60){
+            if (current_time - message_time > 30 * 60){
                 reject("validation time out (over 5 min)");
             }
             let checkValid = bitcoinMessage.verify(message, address, signature);
@@ -217,21 +221,25 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            for (let i = 0; i < self.chain.length; i++) {
-                let crtblk = self.chain[i];
-                let valid_hash = await crtblk.checkValid();
-                let data =  await crtblk.getBData();
-                if (!valid_hash){
-                    errorLog.push({error:"hash invalid", block: JSON.stringify(crtblk).toString()})
-                }
-                if (i > 0){
-                    if (crtblk.previousBlockHash != self.chain[i-1].hash){
-                        errorLog.push({error:"previous hash invalid", block: JSON.stringify(crtblk).toString()})
+            try{
+                for (let i = 0; i < self.chain.length; i++) {
+                    let crtblk = self.chain[i];
+                    let valid_hash = await crtblk.validate();
+                    if (!valid_hash){
+                        errorLog.push({error:"hash invalid", block: JSON.stringify(crtblk).toString()})
+                    }
+                    if (i > 0){
+                        if (crtblk.previousBlockHash != self.chain[i-1].hash){
+                            errorLog.push({error:"previous hash invalid", block: JSON.stringify(crtblk).toString()})
+                        }
                     }
                 }
+                resolve(errorLog);
             }
-            resolve(errorLog);
-            
+            catch(error){
+                console.log(error);
+                reject(error)
+            }
         });
     }
 
