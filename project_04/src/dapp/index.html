@@ -28,19 +28,19 @@
         
         <div class="row top-20">
             <label class="form">Register Airlines</label>
-            <input type="text" id="airline-name" placeholder="Airline Name">
-            <input type="text" id="airline-address" style="width: 400px;" placeholder="Airline Address">
+            <input type="text" id="airline-name" placeholder="Name">
+            <input type="text" id="airline-address" style="width: 400px;" placeholder="Address">
             <btn class="btn btn-primary" id="submit-airline">Register</btn>
         </div>
 
         <div id="display-wrapper" class="top-20" />
         </div>
         <div class="row top-20">
-            <label class="form">Action over Airline</label>
+            <label class="form">Action With Airline</label>
             <input type="text" id="airline-fund-address" style="width: 400px;" placeholder="Airline Address">
             <btn class="btn btn-primary" id="fund-airlines">Fund</btn>
-            <btn class="btn btn-primary" id="is-registered" style="margin-left: 10px;">Is Registered</btn>
-            <btn class="btn btn-primary" id="is-funded" style="margin-left: 10px;">Is Funded</btn>
+            <btn class="btn btn-primary" id="is-registered" style="margin-left: 10px;">Check Registered</btn>
+            <btn class="btn btn-primary" id="is-funded" style="margin-left: 10px;">Check Funded</btn>
         </div>
 
         <div style="margin-top: 40px;">
@@ -67,11 +67,21 @@
         </div>
 
         <div class="row top-20">
+            <btn class="btn btn-primary" id="register-flight">Register</btn>
+            <btn class="btn btn-primary" id="get-flight-key" style="margin-left: 10px;">Get Flight Key</btn>
+        </div>
+
+        <div class="row top-20">
+            <input type="text" id="flight-key" placeholder="Flight key" style="width: 400px;">
+        </div>
+
+        <div class="row top-20">
             <input type="text" id="insurence-amount" placeholder="1 or less ETH" style="width: 400px;">
         </div>
+
         <div class="row top-20">
             <btn class="btn btn-primary" id="submit-buy">Buy</btn>
-            <btn class="btn btn-primary" id="submit-oracle" style="margin-left: 10px;">Fetch Flight Status</btn>
+            <btn class="btn btn-primary" id="submit-oracle" style="margin-left: 10px;">Update Flight Status</btn>
         </div>
 
         <div style="margin-top: 40px;">
@@ -88,7 +98,7 @@
         <div class="row top-20">
             <label class="form">Check Balance</label>
             <input type="text" id="passanger-address" placeholder="Passenger Address" style="width: 400px;">
-            <btn class="btn btn-primary" id="check-balance">Check Credit Pending to Withdraw</btn>
+            <btn class="btn btn-primary" id="check-balance">Check Refund</btn>
             <btn class="btn btn-primary" id="withdraw-balance" style="margin-left: 10px;">Withdraw</btn>
         </div>
 

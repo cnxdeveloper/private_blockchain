@@ -13,13 +13,12 @@ module.exports = {
     development: {
       host: "127.0.0.1",     // Localhost
       port: 8545,            // Standard Ganache UI port
-      network_id: "*",
-      gas: 9999999
+      network_id: "*"
     }
   },
   compilers: {
     solc: {
-      version: "^0.4.24"
+      version: "^0.4.25"
     }
   }
 };

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
@@ -11,25 +11,24 @@ contract FlightSuretyData {
 
     struct Airline {
         string name;
-        address airlineAddress;
+        address AddrAl;
         bool isRegisted;
         bool isFunded;
     }
     mapping(address => Airline) private airLines;
 
     struct Passenger{
-        address passengerAddress;
+        address AddrP;
         mapping (bytes32 => uint256) insuredFlights;
         uint256 refund;
     }
     mapping(address => Passenger) private passengers;
-    address[] public lookup_passenger;
+    address[] private lookup_passenger;
 
-    address private contractOwner;                                      // Account used to deploy contract
-    bool private operational = true;                                    // Blocks all state changes throughout the contract if false
+    address private contractOwner;                                      
+    bool private operational = true;                                    
 
     uint256  registeredAirlineCounter = 0;
-    uint256 totalFunds = 0;
 
     mapping(address => bool) private authorizedAppContracts;
 
@@ -119,7 +118,7 @@ contract FlightSuretyData {
                             view
                             returns(bool)
     {
-        return airLines[airline].airlineAddress != address(0);
+        return airLines[airline].AddrAl != address(0);
     }
 
     function getRegisteredAirline()
@@ -174,7 +173,7 @@ contract FlightSuretyData {
         require(!airLines[airlineAddress].isRegisted, "Caller is registed");
         airLines[airlineAddress] = Airline({
             name: name,
-            airlineAddress: airlineAddress,
+            AddrAl: airlineAddress,
             isFunded: false,
             isRegisted: true
         });
@@ -197,19 +196,21 @@ contract FlightSuretyData {
                             payable
                             requireIsOperational
     {
-        if (passengers[passengerAddress].passengerAddress != address(0)) { // Existing  passenger
+        require(passengerAddress != address(0), "invalid address");
+        if (passengers[passengerAddress].AddrP != address(0)) { // Existing  passenger
             require(passengers[passengerAddress].insuredFlights[flightKey] == 0, "This flight is already insured");
             
-        } else { 
+        }
+        else { 
             passengers[passengerAddress] = Passenger({
-                passengerAddress: passengerAddress,
+                AddrP: passengerAddress,
                 refund: 0
             });
             lookup_passenger.push(passengerAddress);
         }
         passengers[passengerAddress].insuredFlights[flightKey] = insuredAmount;
-        totalFunds = totalFunds.add(insuredAmount); 
     }
+
 
     /**
      *  @dev Credits payouts to insurees
@@ -244,10 +245,10 @@ contract FlightSuretyData {
                             requireIsOperational
     {
         require(insuredPassenger == tx.origin, "Contracts not allowed");
-        require(passengers[insuredPassenger].passengerAddress != address(0), "the passenger error");
+        require(passengers[insuredPassenger].AddrP != address(0), "the passenger error");
         require(passengers[insuredPassenger].refund > 0, "Not refund to pay");
         uint256 refund = passengers[insuredPassenger].refund;
-        require(address(msg.sender).balance > refund, "not enought to fund");
+        require(address(this).balance > refund, "not enought to fund");
         insuredPassenger.transfer(refund);
         passengers[insuredPassenger].refund = 0;
     }
@@ -276,7 +277,6 @@ contract FlightSuretyData {
     {
         require(amount >= 10 ether, "require at least 10 ether");
         airLines[airlineAddress].isFunded = true;
-        totalFunds = totalFunds.add(amount);
     }
 
     function getFlightKey

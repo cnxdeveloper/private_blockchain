@@ -55,13 +55,6 @@ export default class Contract {
             .send({ from: airlineAddress, value: fee }, callback);
     }
 
-    voteForAirline(airlineAddress, callback) {
-        let self = this;
-        self.flightSuretyApp.methods
-            .voteForAirline(airlineAddress)
-            .send({ from: self.owner, gas: 6721900 }, callback);
-    }
-
     isAirlineRegistered(airlineAddress, callback) {
         let self = this;
         self.flightSuretyApp.methods
@@ -69,6 +62,13 @@ export default class Contract {
             .call({ from: self.owner }, callback);
     }
 
+    registerFlight(flightName, airlineAddress, timestamp, callback) {
+        let self = this;
+        self.flightSuretyApp.methods
+            .registerFlight(flightName, airlineAddress, timestamp)
+            .send({ from: self.owner, gas: 6721900 }, callback);
+    }
+    
     isAirlineFunded(airlineAddress, callback) {
         let self = this;
         self.flightSuretyApp.methods
@@ -76,31 +76,29 @@ export default class Contract {
             .call({ from: self.owner }, callback);
     }
 
-    isAirlinePending(airlineAddress, callback) {
+    buy(flightkey, amount, callback) {
         let self = this;
+        let insuredAmount = this.web3.utils.toWei(amount, 'ether');
         self.flightSuretyApp.methods
-            .isAirlinePending(airlineAddress)
-            .call({ from: self.owner }, callback);
-    }
-
-    buy(flightName, airlineAddress, timestamp, amount, callback) {
-        let self = this;
-        const insuredAmount = this.web3.utils.toWei(amount, 'ether');
-        self.flightSuretyApp.methods
-            .buy(flightName, airlineAddress, timestamp)
+            .buy(flightkey)
             .send({ from: self.owner, gas: 6721900, value: insuredAmount }, callback);
     }
 
-    fetchFlightStatus(flightName, airlineAddress, timestamp, callback) {
+    getFlightKeybyName(flightName, airlineAddress, timestamp, callback) {
+        let self = this;
+        self.flightSuretyApp.methods
+            .getFlightKeybyName(flightName, airlineAddress, timestamp)
+            .call({ from: self.owner}, callback);
+    }
+
+    fetchFlightStatus(flightKey, callback) {
         let self = this;
         let payload = {
-            airline: airlineAddress,
-            flight: flightName,
-            timestamp: timestamp
+            flightKey: flightKey,
         }
         self.flightSuretyApp.methods
-            .fetchFlightStatus(payload.airline, payload.flight, payload.timestamp)
-            .send({ from: self.owner }, (error, result) => {
+            .fetchFlightStatus(payload.flightKey)
+            .send({  from: self.owner}, (error, result) => {
                 callback(error, payload);
             });
     }

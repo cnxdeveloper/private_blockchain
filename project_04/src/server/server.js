@@ -25,6 +25,12 @@ async function registerOracles() {
 }
 
 async function simulateOracleResponse(requestedIndex, airline, flight, timestamp) {
+	console.log("airline");
+	console.log(airline);
+	console.log("flight");
+	console.log(flight)
+	console.log("timestamp");
+	console.log(timestamp)
 	const accounts = await web3.eth.getAccounts();
 	for (const account of accounts) {
 		var indexes = await flightSuretyApp.methods.getMyIndexes().call({ from: account });
@@ -59,7 +65,7 @@ flightSuretyApp.events.OracleRequest({}).on('data', async (event, error) => {
 });
 
 flightSuretyApp.events.FlightStatusInfo({}).on('data', async (event, error) => {
-	console.log("event=", event);
+	// console.log("event=", event);
 	console.log("error=", error);
 });
 

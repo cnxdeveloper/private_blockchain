@@ -6,6 +6,7 @@ var BigNumber = require('bignumber.js');
 contract('Flight Surety Tests', async (accounts) => {
 
     var config;
+    var flightkey;
     before('setup contract', async () => {
         config = await Test.Config(accounts);
         await config.flightSuretyData.authorizeCaller(config.flightSuretyApp.address);
@@ -107,6 +108,21 @@ contract('Flight Surety Tests', async (accounts) => {
         assert.equal(result, true, "Second airline should be registered");
     });
 
+    it('Register flight', async () => {
+
+        const flightName = "Third Air";
+        const timeStamp = 1630021956;
+        let error;
+        try {
+            flightkey = await config.flightSuretyApp.getFlightKey(flightName, config.owner, timeStamp, { from: config.owner})
+            await config.flightSuretyApp.registerFlight(flightName, config.owner, timeStamp, { from: config.owner});
+        }
+        catch (e) {
+            error = e;
+        }
+        assert.notEqual(error, undefined, "Register flight fail")
+    });
+
     it('(insurence) Pessanger purchase insurence paying 1 ether max', async () => {
 
         const insuranceAmount = web3.utils.toWei('0.5', "ether");
@@ -114,13 +130,15 @@ contract('Flight Surety Tests', async (accounts) => {
         const thirdAirline = config.testAddresses[3];
         const timeStamp = 1630021956;
         const passengerAddress = config.testAddresses[8];
+        console.log(flightkey);
         let error;
         try {
-            await config.flightSuretyApp.buy(flightName, thirdAirline, timeStamp, { from: passengerAddress, value: insuranceAmount });
+            await config.flightSuretyApp.buy(flightkey, { from: passengerAddress, value: insuranceAmount });
         }
         catch (e) {
             error = e;
         }
         assert.notEqual(error, undefined, "Passenger should be able to buy an insurance.")
     });
+
 });

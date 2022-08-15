@@ -34,14 +34,6 @@ import './flightsurety.css';
             });
         })
 
-        DOM.elid('vote-airlines').addEventListener('click', () => {
-            let airlineAddress = DOM.elid('airline-fund-address').value;
-            contract.voteForAirline(airlineAddress, (error, result) => {
-                displayTx('display-wrapper-register', [{ label: 'Airline voted Tx', error: error, value: result }]);
-                DOM.elid('airline-fund-address').value = "";
-            });
-        })
-
         DOM.elid('is-registered').addEventListener('click', () => {
             let airlineAddress = DOM.elid('airline-fund-address').value;
             contract.isAirlineRegistered(airlineAddress, (error, result) => {
@@ -57,21 +49,24 @@ import './flightsurety.css';
                 DOM.elid('airline-fund-address').value = "";
             });
         })
+        
 
-        DOM.elid('is-pending').addEventListener('click', () => {
-            let airlineAddress = DOM.elid('airline-fund-address').value;
-            contract.isAirlinePending(airlineAddress, (error, result) => {
-                displayTx('display-wrapper-register', [{ label: 'Is Airline pending', error: error, value: result }]);
-                DOM.elid('airline-fund-address').value = "";
+        DOM.elid('register-flight').addEventListener('click', () => {
+            let flightName = DOM.elid('flight-name').value;
+            let airlineAddress = DOM.elid('insurence-airline-address').value;
+            let flightTimestamp = DOM.elid('flight-timestamp').value;
+            displayTx('display-wrapper-buy', [{ label: 'flightName',  value: flightName }]);
+            displayTx('display-wrapper-buy', [{ label: 'airlineAddress',  value: airlineAddress }]);
+            displayTx('display-wrapper-buy', [{ label: 'flightTimestamp',  value: flightTimestamp }]);
+            contract.registerFlight(flightName, airlineAddress, flightTimestamp, (error, result) => {
+                displayTx('display-wrapper-buy', [{ label: 'Register Flight', error: error, value: result }]);
             });
         })
 
         DOM.elid('submit-buy').addEventListener('click', () => {
-            let flightName = DOM.elid('flight-name').value;
-            let airlineAddress = DOM.elid('insurence-airline-address').value;
-            let flightTimestamp = DOM.elid('flight-timestamp').value;
+            let flightkey = DOM.elid('flight-key').value;
             let insuredAmount = DOM.elid('insurence-amount').value;
-            contract.buy(flightName, airlineAddress, flightTimestamp, insuredAmount, (error, result) => {
+            contract.buy(flightkey, insuredAmount, (error, result) => {
                 displayTx('display-wrapper-buy', [{ label: 'Insurance purchased Tx', error: error, value: result }]);
                 DOM.elid('flight-name').value = "";
                 DOM.elid('insurence-airline-address').value = "";
@@ -80,15 +75,23 @@ import './flightsurety.css';
             });
         })
 
-        DOM.elid('submit-oracle').addEventListener('click', () => {
+        DOM.elid('get-flight-key').addEventListener('click', () => {
             let flightName = DOM.elid('flight-name').value;
             let airlineAddress = DOM.elid('insurence-airline-address').value;
             let flightTimestamp = DOM.elid('flight-timestamp').value;
-            contract.fetchFlightStatus(flightName, airlineAddress, flightTimestamp, (error, result) => {
-                displayTx('display-wrapper-buy', [{ label: 'Fetch flight status', error: error, value: "fetching complete" }]);
+            contract.getFlightKeybyName(flightName, airlineAddress, flightTimestamp , (error, result) => {
+                displayTx('display-wrapper-buy', [{ label: 'Get Flight key', error: error, value: result }]);
                 DOM.elid('flight-name').value = "";
                 DOM.elid('insurence-airline-address').value = "";
                 DOM.elid('flight-timestamp').value = "";
+                DOM.elid('flight-key').value = result;
+            });
+        })
+
+        DOM.elid('submit-oracle').addEventListener('click', () => {
+            let flightkey = DOM.elid('flight-key').value;
+            contract.fetchFlightStatus(flightkey, (error, result) => {
+                displayTx('display-wrapper-buy', [{ label: 'Fetch flight status', error: error, value: result}]);
             });
         })
 
