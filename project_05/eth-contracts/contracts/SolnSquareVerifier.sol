@@ -4,13 +4,14 @@ import "./ERC721Mintable.sol";
 import "./Verifier.sol";
 
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
-
+contract SquareVerifier is Verifier{ }
 // TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
-contract SolnSquareVerifier is Verifier, CustomERC721Token{
+contract SolnSquareVerifier is CustomERC721Token{
 
+    SquareVerifier private _squareVerifier;
 
     constructor( address verifierAddress) public {
-        // _squareVerifier = SquareVerifier(verifierAddress);
+        _squareVerifier = SquareVerifier(verifierAddress);
     }
 
     // TODO define a solutions struct that can hold an tokenId & an address
@@ -66,7 +67,7 @@ contract SolnSquareVerifier is Verifier, CustomERC721Token{
         uint[2] memory c, uint[2] memory inputs)
     public
     {
-        require(verifyTx(a,b,c,inputs), "verify error");
+        require(_squareVerifier.verifyTx(a,b,c,inputs), "verify error");
         bytes32 key = generateKey(a, b, c, inputs);
         require(solutions_mapping[key].Address == address(0), "aready exist token");
         addSolution(tokenId, addr, key, a, b, c, inputs);
