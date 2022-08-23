@@ -40,8 +40,8 @@ contract Ownable {
         // TODO add functionality to transfer control of the contract to a newOwner.
         // make sure the new owner is a real address
         require(newOwner != address(0));
-        emit TransferOwnership(_owner, newOwner);
         _owner = newOwner;
+        emit TransferOwnership(_owner, newOwner);
     }
 }
 

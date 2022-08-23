@@ -26,7 +26,7 @@
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const infuraKey = "e1f1c6322d724e1196d578060b9f0153";
-const mnemonic = "critic unusual jealous degree clap margin film firm remove burst rural employ";
+const mnemonic = "netamask_key";
 
 module.exports = {
     /**
@@ -38,7 +38,7 @@ module.exports = {
      *
      * $ truffle test --network <network-name>
      */
-    // plugins: ['truffle-plugin-verify'],
+
     networks: {
         // Useful for testing. The `development` name is special - truffle uses it by default
         // if it's defined here and no other network is specified at the command line.
@@ -104,8 +104,5 @@ module.exports = {
             //  evmVersion: "byzantium"
             // }
         }
-    },
-    api_keys: {
-        etherscan: 'X5SNURH44X2B45XFQNEJYXRKXK4IRJ5NPZ'
-      }
+    }
 }
